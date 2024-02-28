@@ -1,7 +1,9 @@
 ## nextjs-chunk-upload-action-demo
+
 demo [nextjs-chunk-upload-action](https://github.com/a179346/nextjs-chunk-upload-action)
 
 ## Start
+
 ```sh
 npm run dev
 ```
@@ -21,6 +23,7 @@ export function UploadForm() {
   const handleFormAction = (formData: FormData) => {
     const file = formData.get("file") as File;
     if (!file) return;
+
     const uploader = new ChunkUploader({
       file,
       onChunkUpload: chunkUploadAction,
@@ -35,6 +38,7 @@ export function UploadForm() {
         console.log("Upload complete");
       },
     });
+
     uploader.start();
   };
 
@@ -84,6 +88,7 @@ export async function chunkUploadAction(
           start: offset,
         }
   );
+
   return new Promise<void>((resolve, reject) => {
     writeable.on("finish", () => resolve());
     writeable.on("error", reject);

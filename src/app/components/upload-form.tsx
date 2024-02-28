@@ -1,29 +1,37 @@
 "use client";
 
+import { useState } from "react";
 import { ChunkUploader } from "nextjs-chunk-upload-action";
 
 import { chunkUploadAction } from "@/server/chunk-upload-action";
 
 export function UploadForm() {
+  const [progress, setProgress] = useState<{
+    bytesAccepted: number;
+    bytesTotal: number;
+  } | null>(null);
+
   const handleFormAction = (formData: FormData) => {
     const file = formData.get("file") as File;
     if (!file) return;
+
     const uploader = new ChunkUploader({
       file,
       onChunkUpload: chunkUploadAction,
       metadata: { name: file.name },
-      onChunkComplete: (bytesAccepted, bytesTotal) => {
-        console.log("Progress:", `${bytesAccepted} / ${bytesTotal}`);
-      },
-      onError: (error) => {
-        console.error(error);
-      },
-      onSuccess: () => {
-        console.log("Upload complete");
-      },
+      onChunkComplete: (bytesAccepted, bytesTotal) =>
+        setProgress({ bytesAccepted, bytesTotal }),
+      onError: () => setProgress(null),
+      onSuccess: () => setProgress(null),
     });
+
+    setProgress({ bytesAccepted: 0, bytesTotal: file.size });
     uploader.start();
   };
+
+  const percentage = progress
+    ? Math.round((progress.bytesAccepted / progress.bytesTotal) * 100)
+    : 0;
 
   return (
     <form
@@ -37,9 +45,10 @@ export function UploadForm() {
       />
       <button
         type="submit"
-        className="mt-4 p-2 bg-blue-500 text-white rounded-lg"
+        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg disabled:bg-gray-500"
+        disabled={progress !== null}
       >
-        Upload
+        {progress ? `${percentage} %` : "Upload"}
       </button>
     </form>
   );

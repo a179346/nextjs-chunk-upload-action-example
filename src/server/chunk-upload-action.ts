@@ -20,6 +20,7 @@ export async function chunkUploadAction(
           start: offset,
         }
   );
+
   return new Promise<void>((resolve, reject) => {
     writeable.on("finish", () => resolve());
     writeable.on("error", reject);
