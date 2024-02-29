@@ -41,6 +41,7 @@ export function UploadForm() {
       <input
         name="file"
         type="file"
+        required
         className="p-4 border-2 border-dashed rounded-lg"
       />
       <button
