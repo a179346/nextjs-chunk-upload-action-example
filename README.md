@@ -70,13 +70,15 @@ export function UploadForm() {
 
 import { FileHandle, open } from "fs/promises";
 import { join } from "path";
+import { ChunkUploadHandler } from "nextjs-chunk-upload-action";
 
-export async function chunkUploadAction(
-  base64Chunk: string,
-  offset: number,
-  metadata: { name: string }
-) {
-  const buffer = Buffer.from(base64Chunk, "base64");
+export const chunkUploadAction: ChunkUploadHandler<{ name: string }> = async (
+  chunkFormData,
+  offset,
+  metadata
+) => {
+  const blob = chunkFormData.get("blob");
+  const buffer = Buffer.from(await blob.arrayBuffer());
   const filePath = join("./uploads", metadata.name);
 
   let fileHandle: FileHandle | null = null;
@@ -86,5 +88,5 @@ export async function chunkUploadAction(
   } finally {
     await fileHandle?.close();
   }
-}
+};
 ```
