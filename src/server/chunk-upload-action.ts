@@ -16,5 +16,4 @@ export const chunkUploadAction: ChunkUploadHandler<{ name: string }> = async (
 
   await using fileHandle = await open(filePath, offset === 0 ? 'w' : 'r+');
   await fileHandle.write(buffer, 0, buffer.length, offset);
-  await fileHandle?.close();
 };
