@@ -1,6 +1,6 @@
 'use server';
 
-import { open } from 'fs/promises';
+import { open, unlink } from 'fs/promises';
 import { join } from 'path';
 
 import type { ChunkUploadHandler } from 'nextjs-chunk-upload-action';
@@ -16,4 +16,9 @@ export const chunkUploadAction: ChunkUploadHandler<{ name: string }> = async (
 
   await using fileHandle = await open(filePath, offset === 0 ? 'w' : 'r+');
   await fileHandle.write(buffer, 0, buffer.length, offset);
+};
+
+export const uploadAbortAction = async (metadata: { name: string }) => {
+  const filePath = join('./uploads', metadata.name);
+  await unlink(filePath);
 };
