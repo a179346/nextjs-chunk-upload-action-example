@@ -1,4 +1,4 @@
-## nextjs-chunk-upload-action-demo
+## nextjs-chunk-upload-action-example
 
 > This project serves as an example of utilizing the [nextjs-chunk-upload-action](https://github.com/a179346/nextjs-chunk-upload-action) library.
 
