@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "next": "14.1.0",
-    "nextjs-chunk-upload-action": "^7.1.0",
+    "nextjs-chunk-upload-action": "^9.0.0",
     "react": "^18",
     "react-dom": "^18"
   },
